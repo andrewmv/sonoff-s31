@@ -1,0 +1,78 @@
+esphome:
+  name: goat-desk-plug
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret ssid  
+  password: !secret wappw
+  ap:
+    ssid: "Goat Desk Plug Fallback Hotspot"
+    password: !secret hotspotpw  
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+captive_portal:
+
+api:
+  password: !secret apipw
+
+# Disable logging over USB
+logger:
+  baud_rate: 0
+  
+ota:
+  password: !secret apipw
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    id: power_button
+    internal: true
+    on_press:
+      - switch.toggle: relay 
+  - platform: status
+    name: "Goat Desk Plug Status"
+  # - platform: gpio
+  #   pin: GPIO2
+  #   name: "Goat Desk Plug Sensor"
+
+switch:
+  - platform: gpio
+    name: "Goat Desk Plug Switch"
+    id: relay
+    pin: GPIO12
+
+status_led:
+  pin:
+    inverted: True
+    number: GPIO13
+
+sensor:
+  - platform: wifi_signal
+    name: "Goat Desk Plug WiFi Signal"
+    update_interval: 60s
+  - platform: cse7766
+    current:
+      name: "Goat Desk Plug Current"
+    voltage:
+      name: "Goat Desk Plug Voltage"
+    power:
+      name: "Goat Desk Plug Power" 
+      id: goat_desk_plug_power
+      filters:
+        - multiply: 0.001
+      unit_of_measurement: kW 
+  - platform: total_daily_energy
+    name: "Goat Desk Plug Consumption"
+    power_id: goat_desk_plug_power
+
+time:
+  - platform: sntp

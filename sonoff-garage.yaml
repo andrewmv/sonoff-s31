@@ -1,0 +1,67 @@
+esphome:
+  name: ev-plug
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret ssid  
+  password: !secret wappw
+  ap:
+    ssid: "EV Plug Fallback Hotspot"
+    password: !secret hotspotpw  
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+captive_portal:
+
+api:
+  password: !secret apipw
+
+# Disable logging over USB
+logger:
+  baud_rate: 0
+  
+ota:
+  password: !secret apipw
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: "EV Plug Button"
+    on_press:
+      - switch.toggle: relay 
+  - platform: status
+    name: "EV Plug Status"
+  - platform: gpio
+    pin: GPIO2
+    name: "EV Plug Sensor"
+
+switch:
+  - platform: gpio
+    name: "EV Plug Relay"
+    id: relay
+    pin: GPIO12
+
+status_led:
+  pin:
+    inverted: True
+    number: GPIO13
+
+sensor:
+  - platform: wifi_signal
+    name: "EV Plug WiFi Signal"
+    update_interval: 60s
+  - platform: cse7766
+    current:
+      name: "EV Plug Current"
+    voltage:
+      name: "EV Plug Voltage"
+    power:
+      name: "EV Plug Power"  
