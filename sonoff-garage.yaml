@@ -34,18 +34,19 @@ binary_sensor:
         input: true
         pullup: true
       inverted: true
-    name: "EV Plug Button"
+    id: power_button
+    internal: true
     on_press:
       - switch.toggle: relay 
   - platform: status
     name: "EV Plug Status"
-  - platform: gpio
-    pin: GPIO2
-    name: "EV Plug Sensor"
+  # - platform: gpio
+  #   pin: GPIO2
+  #   name: "EV Plug Sensor"
 
 switch:
   - platform: gpio
-    name: "EV Plug Relay"
+    name: "EV Plug Switch"
     id: relay
     pin: GPIO12
 
@@ -64,4 +65,14 @@ sensor:
     voltage:
       name: "EV Plug Voltage"
     power:
-      name: "EV Plug Power"  
+      name: "EV Plug Power" 
+      id: ev_plug_power
+      filters:
+        - multiply: 0.001
+      unit_of_measurement: kW 
+  - platform: total_daily_energy
+    name: "EV Plug Consumption"
+    power_id: ev_plug_power
+
+time:
+  - platform: sntp
