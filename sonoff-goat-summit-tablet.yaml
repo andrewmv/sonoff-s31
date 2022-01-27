@@ -1,0 +1,97 @@
+esphome:
+  name: goat-summit-tablet-plug
+  platform: ESP8266
+  board: esp01_1m
+  on_boot:
+    then:
+      - lambda: |-
+          id(relay).state = id(last_relay_state);
+
+preferences:
+  flash_write_interval: 5min
+
+wifi:
+  ssid: !secret ssid  
+  password: !secret wappw
+  ap:
+    ssid: "Summit Plug Fallback Hotspot"
+    password: !secret hotspotpw  
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+captive_portal:
+
+api:
+  password: !secret apipw
+
+# Disable logging over USB
+logger:
+  baud_rate: 0
+  
+ota:
+  password: !secret apipw
+
+globals:
+  - id: last_relay_state
+    type: bool
+    restore_value: true
+    initial_value: 'true'
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    id: power_button
+    internal: true
+    on_press:
+      - switch.toggle: relay 
+  - platform: status
+    name: "Goat Summit Tablet Plug Status"
+  # - platform: gpio
+  #   pin: GPIO2
+  #   name: "Goat Summit Tablet Plug Sensor"
+
+switch:
+  - platform: gpio
+    name: "Goat Summit Tablet Plug Switch"
+    id: relay
+    pin: GPIO12
+    on_turn_on:
+      - lambda: |-
+          id(last_relay_state) = true;
+    on_turn_off:
+      - lambda: |-
+          id(last_relay_state) = false;
+
+status_led:
+  pin:
+    inverted: True
+    number: GPIO13
+
+sensor:
+  - platform: wifi_signal
+    name: "Goat Summit Tablet Plug WiFi Signal"
+    update_interval: 60s
+  - platform: cse7766
+    current:
+      name: "Goat Summit Tablet Plug Current"
+    voltage:
+      name: "Goat Summit Tablet Plug Voltage"
+    power:
+      name: "Goat Summit Tablet Plug Power" 
+      id: goat_summit_tablet_plug_power
+      filters:
+        - multiply: 0.001
+      unit_of_measurement: kW 
+  - platform: total_daily_energy
+    name: "Goat Summit Tablet Plug Consumption"
+    power_id: goat_summit_tablet_plug_power
+
+time:
+  - platform: sntp

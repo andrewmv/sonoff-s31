@@ -1,0 +1,7 @@
+substitutions:
+  devicename: omega-desk-plug
+  friendlyname: Omega Desk Plug
+  fallbackssid: ODesk Fallback AP
+
+packages:
+  sonoff: !include common/sonoff.yaml

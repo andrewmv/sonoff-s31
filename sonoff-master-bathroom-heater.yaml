@@ -1,0 +1,103 @@
+esphome:
+  name: master_bath_heater_plug 
+  platform: ESP8266
+  board: esp01_1m
+  on_boot:
+    then:
+      - lambda: |-
+          id(relay).state = id(last_relay_state);
+
+preferences:
+  flash_write_interval: 5min
+
+wifi:
+  ssid: !secret ssid  
+  password: !secret wappw
+  ap:
+    ssid: "MBH Fallback Hotspot"
+    password: !secret hotspotpw  
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+captive_portal:
+
+api:
+  password: !secret apipw
+
+# Disable logging over USB
+logger:
+  baud_rate: 0
+  
+ota:
+  password: !secret apipw
+
+globals:
+  - id: last_relay_state
+    type: bool
+    restore_value: true
+    initial_value: 'true'
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    id: power_button
+    internal: true
+    on_press:
+      - switch.toggle: relay 
+  - platform: status
+    name: "Master Bathroom Heater Plug Status"
+  - platform: template
+    device_class: heat
+    name: "Master Bathroom Heater Running"
+    lambda: |-
+      if (id(master_bathroom_heater_plug_power).state > 0.1) {
+        return true;
+      } else {
+        return false;
+      }
+
+switch:
+  - platform: gpio
+    name: "Master Bathroom Heater Plug Switch"
+    id: relay
+    pin: GPIO12
+    on_turn_on:
+      - lambda: |-
+          id(last_relay_state) = true;
+    on_turn_off:
+      - lambda: |-
+          id(last_relay_state) = false;
+
+status_led:
+  pin:
+    inverted: True
+    number: GPIO13
+
+sensor:
+  - platform: wifi_signal
+    name: "Master Bathroom Heater Plug WiFi Signal"
+    update_interval: 60s
+  - platform: cse7766
+    current:
+      name: "Master Bathroom Heater Plug Current"
+    voltage:
+      name: "Master Bathroom Heater Plug Voltage"
+    power:
+      name: "Master Bathroom Heater Plug Power" 
+      id: master_bathroom_heater_plug_power
+      filters:
+        - multiply: 0.001
+      unit_of_measurement: kW 
+  - platform: total_daily_energy
+    name: "Master Bathroom Heater Plug Consumption"
+    power_id: master_bathroom_heater_plug_power
+
+time:
+  - platform: sntp

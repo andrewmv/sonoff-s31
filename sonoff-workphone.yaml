@@ -1,0 +1,75 @@
+esphome:
+  name: work-phone-plug
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret ssid  
+  password: !secret wappw
+  ap:
+    ssid: "Work Phone Plug Fallback Hotspot"
+    password: !secret hotspotpw  
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+captive_portal:
+
+api:
+  password: !secret apipw
+
+# Disable logging over USB
+logger:
+  baud_rate: 0
+  
+ota:
+  password: !secret apipw
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    id: power_button
+    internal: true
+    on_press:
+      - switch.toggle: relay 
+  - platform: status
+    name: "Work Phone Plug Status"
+
+switch:
+  - platform: gpio
+    name: "Work Phone Plug Switch"
+    id: relay
+    pin: GPIO12
+
+status_led:
+  pin:
+    inverted: True
+    number: GPIO13
+
+sensor:
+  - platform: wifi_signal
+    name: "Work Phone Plug WiFi Signal"
+    update_interval: 60s
+  - platform: cse7766
+    current:
+      name: "Work Phone Plug Current"
+    voltage:
+      name: "Work Phone Plug Voltage"
+    power:
+      name: "Work Phone Plug Power" 
+      id: plug_power
+      filters:
+        - multiply: 0.001
+      unit_of_measurement: kW 
+  - platform: total_daily_energy
+    name: "Work Phone Plug Consumption"
+    power_id: plug_power
+
+time:
+  - platform: sntp
