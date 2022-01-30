@@ -4,4 +4,4 @@ substitutions:
   fallbackssid: ODesk Fallback AP
 
 packages:
-  sonoff: !include common/sonoff.yaml
+  sonoff: !include common/sonoff_noswitch.yaml

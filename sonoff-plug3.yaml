@@ -1,7 +1,0 @@
-substitutions:
-  devicename: plug-3
-  friendlyname: Plug Three
-  fallbackssid: Plug3 Fallback AP
-
-packages:
-  sonoff: !include common/sonoff.yaml
