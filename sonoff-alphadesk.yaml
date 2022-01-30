@@ -1,0 +1,7 @@
+substitutions:
+  devicename: alpha-desk-plug
+  friendlyname: Alpha Desk Plug
+  fallbackssid: ADP Fallback AP
+
+packages:
+  sonoff: !include common/sonoff_noswitch.yaml
