@@ -4,4 +4,4 @@ substitutions:
   fallbackssid: Plug1 Fallback AP
 
 packages:
-  sonoff: !include common/sonoff.yaml
+  sonoff: !include common/sonoff_resettimer.yaml
