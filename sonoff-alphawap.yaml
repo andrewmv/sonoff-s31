@@ -1,0 +1,7 @@
+substitutions:
+  devicename: alpha-wap-plug
+  friendlyname: Alpha WAP Plug
+  fallbackssid: AWAP Fallback AP
+
+packages:
+  sonoff: !include common/sonoff_resettimer.yaml

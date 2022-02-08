@@ -1,0 +1,8 @@
+# Rotation Placeholder for 8c:aa:b5:65:ad:36 / Omega WAP Plug
+substitutions:
+  devicename: omega-wap-plug
+  friendlyname: Omega WAP Plug
+  fallbackssid: OWAP Fallback AP
+
+packages:
+  sonoff: !include common/sonoff_resettimer.yaml

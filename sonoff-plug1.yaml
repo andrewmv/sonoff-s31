@@ -1,7 +1,0 @@
-substitutions:
-  devicename: plug-1
-  friendlyname: Plug One
-  fallbackssid: Plug1 Fallback AP
-
-packages:
-  sonoff: !include common/sonoff_resettimer.yaml

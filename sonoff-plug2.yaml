@@ -1,7 +1,0 @@
-substitutions:
-  devicename: plug-2
-  friendlyname: Plug Two
-  fallbackssid: Plug2 Fallback AP
-
-packages:
-  sonoff: !include common/sonoff.yaml

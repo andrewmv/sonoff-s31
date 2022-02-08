@@ -1,0 +1,7 @@
+substitutions:
+  devicename: home-theater-wap-plug
+  friendlyname: Home Theater WAP Plug
+  fallbackssid: HTWAP Fallback AP
+
+packages:
+  sonoff: !include common/sonoff_resettimer.yaml

@@ -1,0 +1,7 @@
+substitutions:
+  devicename: goat-summit-wap-plug
+  friendlyname: Goat Summit WAP Plug
+  fallbackssid: GWAP Fallback AP
+
+packages:
+  sonoff: !include common/sonoff_resettimer.yaml
