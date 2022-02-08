@@ -2,10 +2,6 @@ esphome:
   name: master_bath_heater_plug 
   platform: ESP8266
   board: esp01_1m
-  on_boot:
-    then:
-      - lambda: |-
-          id(relay).state = id(last_relay_state);
 
 preferences:
   flash_write_interval: 5min
@@ -33,12 +29,6 @@ logger:
 ota:
   password: !secret apipw
 
-globals:
-  - id: last_relay_state
-    type: bool
-    restore_value: true
-    initial_value: 'true'
-
 binary_sensor:
   - platform: gpio
     pin:
@@ -57,7 +47,7 @@ binary_sensor:
     device_class: heat
     name: "Master Bathroom Heater Running"
     lambda: |-
-      if (id(master_bathroom_heater_plug_power).state > 0.1) {
+      if (id(plug_power).state > 0.1) {
         return true;
       } else {
         return false;
@@ -65,15 +55,10 @@ binary_sensor:
 
 switch:
   - platform: gpio
-    name: "Master Bathroom Heater Plug Switch"
+    internal: true
+    restore_mode: ALWAYS_ON
     id: relay
     pin: GPIO12
-    on_turn_on:
-      - lambda: |-
-          id(last_relay_state) = true;
-    on_turn_off:
-      - lambda: |-
-          id(last_relay_state) = false;
 
 status_led:
   pin:
@@ -85,19 +70,23 @@ sensor:
     name: "Master Bathroom Heater Plug WiFi Signal"
     update_interval: 60s
   - platform: cse7766
+    update_interval: 1s
     current:
-      name: "Master Bathroom Heater Plug Current"
+      id: plug_current
+      internal: true
     voltage:
-      name: "Master Bathroom Heater Plug Voltage"
+      id: plug_voltage
+      internal: true
     power:
-      name: "Master Bathroom Heater Plug Power" 
-      id: master_bathroom_heater_plug_power
+      id: plug_power
+      internal: true
       filters:
         - multiply: 0.001
       unit_of_measurement: kW 
   - platform: total_daily_energy
+    min_save_interval: 600s
     name: "Master Bathroom Heater Plug Consumption"
-    power_id: master_bathroom_heater_plug_power
+    power_id: plug_power
 
 time:
   - platform: sntp
