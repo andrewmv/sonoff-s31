@@ -58,6 +58,7 @@ script:
   - id: reset_timer
     mode: restart
     then: 
-      - switch.turn_off: relay
       - delay: 2000ms
+      - switch.turn_off: relay
+      - delay: 5000ms
       - switch.turn_on: relay

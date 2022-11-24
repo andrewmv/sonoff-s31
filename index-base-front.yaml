@@ -1,0 +1,10 @@
+substitutions:
+  devicename: index-base-front
+  friendlyname: Index VR Front Base Station Plug
+  fallbackssid: VR1 Fallback AP
+
+packages:
+  sonoff: !include common/sonoff.yaml
+
+# wifi:
+#   use_address: goat-desk-plug.local

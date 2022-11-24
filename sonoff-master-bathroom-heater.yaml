@@ -47,7 +47,7 @@ binary_sensor:
     device_class: heat
     name: "Master Bathroom Heater Running"
     lambda: |-
-      if (id(plug_power).state > 0.1) {
+      if (id(master_bathroom_heater_plug_power).state > 0.1) {
         return true;
       } else {
         return false;
@@ -78,15 +78,15 @@ sensor:
       id: plug_voltage
       internal: true
     power:
-      id: plug_power
-      internal: true
+      id: master_bathroom_heater_plug_power
+      name: "Master Bathroom Heater Plug Power"
       filters:
         - multiply: 0.001
       unit_of_measurement: kW 
   - platform: total_daily_energy
     min_save_interval: 600s
     name: "Master Bathroom Heater Plug Consumption"
-    power_id: plug_power
+    power_id: master_bathroom_heater_plug_power
 
 time:
   - platform: sntp

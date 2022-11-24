@@ -1,0 +1,12 @@
+substitutions:
+  name: "lrac-plug"
+  friendly_name: "Living Room AC Plug"
+  project_name: "living-room-ac.smart-plug"
+  project_version: "1.0"
+  relay_restore_mode: RESTORE_DEFAULT_ON
+  fallbackssid: "LRAC_Plug_Fallback"
+
+packages:
+  athom: !include common/athom.yaml
+
+sensor:

@@ -1,0 +1,9 @@
+substitutions:
+  name: "kitchen-echo-plug"
+  friendly_name: "Kitchen Echo Plug"
+  project_name: "kithen-echo.smart-plug"
+  project_version: "1.0"
+  relay_restore_mode: RESTORE_DEFAULT_OFF
+
+packages:
+  athom: !include common/athom_resettimer.yaml

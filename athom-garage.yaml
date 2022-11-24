@@ -1,0 +1,9 @@
+substitutions:
+  name: "ev-plug"
+  friendly_name: "EV Plug"
+  project_name: "ev-plug.smart-plug"
+  project_version: "1.0"
+  relay_restore_mode: RESTORE_DEFAULT_OFF
+
+packages:
+  athom: !include common/athom_noswitch.yaml

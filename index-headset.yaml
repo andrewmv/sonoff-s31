@@ -1,0 +1,10 @@
+substitutions:
+  devicename: index-headset
+  friendlyname: Index VR Headset Plug
+  fallbackssid: VR3 Fallback AP
+
+packages:
+  sonoff: !include common/sonoff.yaml
+
+# wifi:
+#   use_address: goat-desk-plug.local
