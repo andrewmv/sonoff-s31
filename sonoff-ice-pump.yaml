@@ -1,0 +1,95 @@
+esphome:
+  name: ice-pump 
+  platform: ESP8266
+  board: esp01_1m
+
+substitutions:
+  friendlyname: Ice Pump 
+  fallbackssid: Ice Pump Fallback AP
+
+wifi:
+  ssid: !secret ssid  
+  password: !secret wappw
+  ap:
+    ssid: ${fallbackssid}
+    password: !secret hotspotpw  
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+captive_portal:
+
+api:
+  password: !secret apipw
+
+# Disable logging over USB
+logger:
+  baud_rate: 0
+  
+ota:
+  password: !secret apipw
+
+status_led:
+  pin:
+    inverted: True
+    number: GPIO13
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    id: power_button
+    internal: true
+    on_press:
+      - switch.toggle: ice_pump_timer 
+  - platform: status
+    name: "${friendlyname} Status"
+
+switch:
+  - platform: gpio
+    name: "${friendlyname} Switch"
+    id: relay
+    pin: GPIO12
+  - platform: template
+    name: "${friendlyname} Timer"
+    id: ice_pump_timer
+    lambda: 'return id(start_timer).is_running();'
+    turn_on_action:
+      script.execute: start_timer
+    turn_off_action:
+      script.stop: start_timer
+
+script:
+  - id: start_timer
+    mode: restart
+    then: 
+      - switch.turn_on: relay
+      - delay: 1800s
+      - switch.turn_off: relay
+
+sensor:
+  - platform: wifi_signal
+    name: "${friendlyname} WiFi Signal"
+    update_interval: 60s
+  - platform: cse7766
+    current:
+      name: "${friendlyname} Current"
+    voltage:
+      name: "${friendlyname} Voltage"
+    power:
+      name: "${friendlyname} Power" 
+      id: plug_power
+      filters:
+        - multiply: 0.001
+      unit_of_measurement: kW 
+  - platform: total_daily_energy
+    name: "${friendlyname} Consumption"
+    power_id: plug_power
+
+time:
+  - platform: sntp
