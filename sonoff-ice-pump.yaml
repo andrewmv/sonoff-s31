@@ -47,6 +47,8 @@ binary_sensor:
     internal: true
     on_press:
       - switch.toggle: ice_pump_timer 
+    on_double_click:
+      - switch.toggle: relay
   - platform: status
     name: "${friendlyname} Status"
 
@@ -55,6 +57,7 @@ switch:
     name: "${friendlyname} Switch"
     id: relay
     pin: GPIO12
+    restore_mode: ALWAYS_OFF
   - platform: template
     name: "${friendlyname} Timer"
     id: ice_pump_timer
