@@ -32,6 +32,46 @@ ota:
 binary_sensor:
   - platform: status
     name: "${friendlyname} Status"
+  - platform: template
+    device_class: power
+    name: "${device_1_name} On"
+    id: "${device_1_id}_on"
+    lambda: |-
+      if (
+        (id(plug_power).state > ${device_1_watts_lower}) 
+        and 
+        (id(plug_power).state < ${device_1_watts_upper})
+      ) {
+        return true;
+      } else if (
+        (id(plug_power).state > (${device_1_watts_lower} + ${device_2_watts_lower})) 
+        and 
+        (id(plug_power).state < (${device_1_watts_upper} + ${device_2_watts_upper})) 
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+  - platform: template
+    device_class: power
+    name: "${device_2_name} On"
+    id: "${device_2_id}_on"
+    lambda: |-
+      if (
+        (id(plug_power).state > ${device_2_watts_lower}) 
+        and 
+        (id(plug_power).state < ${device_2_watts_upper})
+      ) {
+        return true;
+      } else if (
+        (id(plug_power).state > (${device_1_watts_lower} + ${device_2_watts_lower}))
+        and 
+        (id(plug_power).state < (${device_1_watts_upper} + ${device_2_watts_upper}))
+      ) {
+        return true;
+      } else {
+        return false;
+      }
 
 switch:
   - platform: gpio

@@ -1,0 +1,15 @@
+substitutions:
+  devicename: media-console-plug
+  friendlyname: Media Console Plug
+  fallbackssid: Media Console Fallback
+  device_1_id: reel_to_reel
+  device_1_name: Reel-to-Reel
+  device_1_watts_lower: "10.0"
+  device_1_watts_upper: "100.0"
+  device_2_id: turntable
+  device_2_name: Turntable
+  device_2_watts_lower: "30.0"
+  device_2_watts_upper: "300.0"
+
+packages:
+  sonoff: !include common/sonoff_noswitch_binary_custom.yaml

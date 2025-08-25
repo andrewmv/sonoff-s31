@@ -1,0 +1,12 @@
+substitutions:
+  devicename: "alpha-radiator-plug"
+  friendlyname: "Alpha's Radiator Plug"
+  project_name: "alpha-radiator.smart-plug"
+  project_version: "1.0"
+  relay_restore_mode: RESTORE_DEFAULT_ON
+  fallbackssid: "Radiator_Fallback"
+
+packages:
+  sonoff: !include common/sonoff.yaml
+
+sensor:

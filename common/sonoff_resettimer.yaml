@@ -1,6 +1,7 @@
 esphome:
   name: ${devicename}
-  platform: ESP8266
+
+esp8266:
   board: esp01_1m
 
 wifi:
@@ -13,6 +14,7 @@ wifi:
 uart:
   rx_pin: RX
   baud_rate: 4800
+  parity: EVEN
 
 captive_portal:
 
@@ -24,6 +26,7 @@ logger:
   baud_rate: 0
   
 ota:
+  platform: esphome
   password: !secret apipw
 
 binary_sensor:
@@ -49,10 +52,10 @@ status_led:
     inverted: True
     number: GPIO13
 
-# sensor:
-#   - platform: wifi_signal
-#     name: "${friendlyname} WiFi Signal"
-#     update_interval: 60s
+sensor:
+  - platform: wifi_signal
+    name: "${friendlyname} WiFi Signal"
+    update_interval: 60s
 
 script:
   - id: reset_timer
@@ -60,5 +63,5 @@ script:
     then: 
       - delay: 2000ms
       - switch.turn_off: relay
-      - delay: 5000ms
+      - delay: 20000ms
       - switch.turn_on: relay

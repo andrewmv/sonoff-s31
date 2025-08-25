@@ -1,0 +1,9 @@
+substitutions:
+  devicename: goat-summit-window-fan
+  friendlyname: Goat Summit Window Fan
+  fallbackssid: Boxfan Fallback AP
+  relay_restore_mode: RESTORE_DEFAULT_OFF
+  sensor_update_interval: 10s
+
+packages:
+  sonoff: !include common/sonoff.yaml

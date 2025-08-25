@@ -1,91 +1,12 @@
-esphome:
-  name: master_bath_heater_plug 
-  platform: ESP8266
-  board: esp01_1m
+substitutions:
+  devicename: "master-bathroom-heater-plug"
+  friendlyname: "Master Bathroom Heater Plug"
+  project_name: "master-bathroom-heater-plug.smart-plug"
+  project_version: "1.0"
+  relay_restore_mode: RESTORE_DEFAULT_ON
+  fallbackssid: "bathroom-heater-fallback"
 
-preferences:
-  flash_write_interval: 10min
-
-wifi:
-  ssid: !secret ssid  
-  password: !secret wappw
-  ap:
-    ssid: "MBH Fallback Hotspot"
-    password: !secret hotspotpw  
-
-uart:
-  rx_pin: RX
-  baud_rate: 4800
-
-captive_portal:
-
-api:
-  password: !secret apipw
-
-# Disable logging over USB
-logger:
-  baud_rate: 0
-  
-ota:
-  password: !secret apipw
-
-binary_sensor:
-  - platform: gpio
-    pin:
-      number: GPIO0
-      mode:
-        input: true
-        pullup: true
-      inverted: true
-    id: power_button
-    internal: true
-    on_press:
-      - switch.toggle: relay 
-  - platform: status
-    name: "Master Bathroom Heater Plug Status"
-  - platform: template
-    device_class: heat
-    name: "Master Bathroom Heater Running"
-    lambda: |-
-      if (id(master_bathroom_heater_plug_power).state > 0.1) {
-        return true;
-      } else {
-        return false;
-      }
-
-switch:
-  - platform: gpio
-    internal: true
-    restore_mode: ALWAYS_ON
-    id: relay
-    pin: GPIO12
-
-status_led:
-  pin:
-    inverted: True
-    number: GPIO13
+packages:
+  sonoff: !include common/sonoff_noswitch_binary.yaml
 
 sensor:
-  - platform: wifi_signal
-    name: "Master Bathroom Heater Plug WiFi Signal"
-    update_interval: 60s
-  - platform: cse7766
-    update_interval: 1s
-    current:
-      id: plug_current
-      internal: true
-    voltage:
-      id: plug_voltage
-      internal: true
-    power:
-      id: master_bathroom_heater_plug_power
-      name: "Master Bathroom Heater Plug Power"
-      filters:
-        - multiply: 0.001
-      unit_of_measurement: kW 
-  - platform: total_daily_energy
-    name: "Master Bathroom Heater Plug Consumption"
-    power_id: master_bathroom_heater_plug_power
-
-time:
-  - platform: sntp
