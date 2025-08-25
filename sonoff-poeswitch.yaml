@@ -1,0 +1,7 @@
+substitutions:
+  devicename: poe-switch-plug
+  friendlyname: POE Switch Plug
+  fallbackssid: POE Switch Fallback AP
+
+packages:
+  sonoff: !include common/sonoff_resettimer.yaml

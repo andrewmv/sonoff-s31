@@ -1,0 +1,10 @@
+substitutions:
+  name: "foyer-fan"
+  friendly_name: "Foyer Fan Plug"
+  project_name: "foyer-fan.smart-plug"
+  project_version: "1.0"
+  relay_restore_mode: RESTORE_DEFAULT_OFF
+  fallbackssid: "foyer-fan-fallback"
+
+packages:
+  athom: !include common/athom_new.yaml

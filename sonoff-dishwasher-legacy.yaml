@@ -1,0 +1,12 @@
+substitutions:
+  devicename: "dishwasher-plug"
+  friendlyname: "Dishwasher Plug"
+  project_name: "dishwasher-plug.smart-plug"
+  project_version: "1.0"
+  relay_restore_mode: RESTORE_DEFAULT_ON
+  fallbackssid: "Dishwasher_Fallback"
+
+packages:
+  sonoff: !include common/sonoff_noswitch_legacy.yaml
+
+sensor:

@@ -1,0 +1,80 @@
+esphome:
+  name: goat-desk-display-sensor
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret ssid  
+  password: !secret wappw
+  ap:
+    ssid: "Goat Desk Display Fallback"
+    password: !secret hotspotpw
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+captive_portal:
+
+api:
+  password: !secret apipw
+
+# Disable logging over USB
+logger:
+  baud_rate: 0
+  
+ota:
+  password: !secret apipw
+
+binary_sensor:
+  - platform: status
+    name: "Goat Desk Display Sensor Status"
+  - platform: template
+    device_class: power
+    name: "Goat Desk Display On"
+    lambda: |-
+      if (id(goat_desk_plug_power).state > 10.0) {
+        return true;
+      } else {
+        return false;
+      }
+
+switch:
+  - platform: gpio
+    internal: true
+    id: relay
+    pin: GPIO12
+    restore_mode: ALWAYS_ON
+
+status_led:
+  pin:
+    inverted: True
+    number: GPIO13
+
+sensor:
+  - platform: wifi_signal
+    name: "Goat Desk Display Sensor WiFi Signal"
+    update_interval: 60s
+  - platform: cse7766
+    update_interval: 1s
+    current:
+      name: "Goat Desk Display Current"
+      filters:
+        - throttle_average: 60s
+    voltage:
+      name: "Goat Desk Display Voltage"
+      filters:
+        - throttle_average: 60s
+    power:
+      name: "Goat Desk Display Power" 
+      id: goat_desk_plug_power
+      internal: true
+#      filters:
+#        - multiply: 0.001
+      unit_of_measurement: W 
+#  - platform: total_daily_energy
+#    name: "Goat Desk Display Sensor Consumption"
+#    power_id: goat_desk_plug_power
+
+#time:
+#  - platform: sntp
