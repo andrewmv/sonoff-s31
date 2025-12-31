@@ -43,12 +43,12 @@ binary_sensor:
         (id(plug_power).state < ${device_1_watts_upper})
       ) {
         return true;
-      } else if (
-        (id(plug_power).state > (${device_1_watts_lower} + ${device_2_watts_lower})) 
-        and 
-        (id(plug_power).state < (${device_1_watts_upper} + ${device_2_watts_upper})) 
-      ) {
-        return true;
+      // } else if (
+      //   (id(plug_power).state > (${device_1_watts_upper} + ${device_2_watts_lower})) 
+      //   and 
+      //   (id(plug_power).state < (${device_1_watts_upper} + ${device_2_watts_upper})) 
+      // ) {
+      //   return true;
       } else {
         return false;
       }
@@ -63,12 +63,12 @@ binary_sensor:
         (id(plug_power).state < ${device_2_watts_upper})
       ) {
         return true;
-      } else if (
-        (id(plug_power).state > (${device_1_watts_lower} + ${device_2_watts_lower}))
-        and 
-        (id(plug_power).state < (${device_1_watts_upper} + ${device_2_watts_upper}))
-      ) {
-        return true;
+      // } else if (
+      //   (id(plug_power).state > (${device_1_watts_upper} + ${device_2_watts_lower}))
+      //   and 
+      //   (id(plug_power).state < (${device_1_watts_upper} + ${device_2_watts_upper}))
+      // ) {
+      //   return true;
       } else {
         return false;
       }

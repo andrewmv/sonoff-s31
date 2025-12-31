@@ -1,0 +1,12 @@
+substitutions:
+  devicename: "bar-fridge-plug"
+  friendlyname: "Bar Fridge Plug"
+  project_name: "bar-fridge.smart-plug"
+  project_version: "1.0"
+  relay_restore_mode: RESTORE_DEFAULT_ON
+  fallbackssid: "BarFridge_Fallback"
+
+packages:
+  sonoff: !include common/sonoff_noswitch.yaml
+
+sensor:
