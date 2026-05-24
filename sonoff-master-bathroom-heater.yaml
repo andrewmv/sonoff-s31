@@ -5,8 +5,9 @@ substitutions:
   project_version: "1.0"
   relay_restore_mode: RESTORE_DEFAULT_ON
   fallbackssid: "bathroom-heater-fallback"
+  sensor_update_interval: "1s"
 
 packages:
-  sonoff: !include common/sonoff_noswitch_binary.yaml
+  sonoff: !include common/sonoff.yaml
 
 sensor:
